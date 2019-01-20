@@ -6,7 +6,8 @@ class Services_model extends CI_Model {
 	public function get_services($tag)
 	{
 	    $this->db->select('*');
-	    if($tag != 0) { $this->db->where('type_id', $tag); }
+		if($tag != 0) { $this->db->where('type_id', $tag); }
+		$this->db->where('status !=', 0);
 	    $query = $this->db->get('services');
 	    return $query->result();
 	}
@@ -36,10 +37,10 @@ class Services_model extends CI_Model {
         return false;
 	}
 
-	// // Eliminar servicio
+	// // Eliminacion logica de un servicio
 	public function deleteService($id)
 	{
-		if ($this->db->delete('services', array('id' => $id))) {
+		if ($this->db->update('services', array('status' => 0), array('id' => $id))) {
 			return true;
 		}
 		return false;
